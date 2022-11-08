@@ -1,3 +1,4 @@
+from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
@@ -6,12 +7,13 @@ import xmltodict as xmltodict
 import json
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 def ursafe(request):
-    if request.method == "GET":
-        apiUrl = 'https://www.maniadb.com/api/search/metallica/?sr=artist&display=10&key=example&v=0.5'
+    if request.method == "POST":
+        data = JSONParser().parse(request)
+        url = data['url']
 
-        req = requests.get(apiUrl)
+        req = requests.get(url)
 
         xpars = xmltodict.parse(req.text)
 
